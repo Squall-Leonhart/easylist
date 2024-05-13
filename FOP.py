@@ -333,6 +333,13 @@ def elementtidy (domains, separator, selector):
     # Remove the markers from the beginning and end of the selector and return the complete rule
     return "{domain}{separator}{selector}".format(domain = domains, separator = separator, selector = selector[1:-1])
 
+def fix_uBO_directive(line):
+    """This function checks for specific lines related to uBO inclusions and corrects the format of the !#include line."."""
+    if line.startswith("! Include ubO specific"):
+        return line  # Keep the first line as-is
+    elif line.startswith("! #include"):
+        return line.replace("! #include", "!#include")  # Fix the format of the second line
+
 def commit (repository, basecommand, userchanges):
     """ Commit changes to a repository using the commands provided."""
     difference = subprocess.check_output(basecommand + repository.difference)
